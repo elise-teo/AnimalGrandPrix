@@ -1,0 +1,436 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Animal Grand Prix</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter';
+            background-color: #f0f8ff;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 30px auto;
+            background-color: #ffffff;
+            padding: 20px 40px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #028F97;
+            font-weight: 700;
+            font-size: 2.6em;
+            margin-bottom: 0;
+        }
+        h2 {
+            text-align: center;
+            color: #028F97;
+            font-weight: 600;
+            font-size: 2em;
+        }
+        h3 {
+            text-align: center;
+            color: #1dacb3;
+            font-weight: 500;
+            font-size: 1.4em;
+        }
+        p {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        #quizForm {
+            margin-top: 80px;
+        }
+        .question {
+            margin-bottom: 80px;
+        }
+        .options label {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #d7ecec;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .options input {
+            margin-right: 10px;
+        }
+        .options label:hover {
+            background-color: #b0ebed;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #028F97;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #00b4be;
+        }
+        .result {
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            padding: 40px;
+            background-color: #d7ecec;
+            border: 2px solid #028F97;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .result h2 {
+            color: #028F97;
+            margin-top: 60px;
+            font-size: 1.4em;
+        }
+        .result h3 {
+            text-align: center;
+            color: #1dacb3;
+            font-weight: 600;
+            font-size: 1.2em;
+            margin-bottom: 0;
+        }
+        .result p {
+            font-size: 1em;
+        }
+        .result ul {
+            list-style-type: disc; /* Ensures the list items are bulleted */
+            padding-left: 0; /* Removes default padding */
+            display: inline-block; /* This ensures the list is centered but its items are left-aligned */
+            margin: 0 auto; /* Center the list in the container */
+        }
+        .result li {
+            padding-left: 16px; /* Adds indentation to bullet points */
+            text-align: left; /* Left-align the list items */
+        }
+        .compatibility {
+            display: flex;
+            gap: 20px; /* Space between the items */
+            margin-top: 20px; /* Space above the row */
+        }
+        .compatibility-item {
+            flex: 1; /* Ensures both items take up equal width */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="margin-bottom: 0">THE ANIMAL GRAND PRIX</h1>
+        <h3 style="margin-top: 10px">Race to Discover Your Unique Approach to Success!</h3>
+        <img src="media/grand prix.jpeg" width="100%">
+        <p>Welcome to The Animal Grand Prix, where strategy, creativity, and perseverance collide! This race isn’t just about speed; it’s about how you tackle challenges and grow along the way. Each racer brings their own style — from quick decisions and bold risks to steady perseverance.</p>
+        <p>Are you ready to find out which racer you are?</p>
+
+        <form id="quizForm">
+            <!-- Questions will be dynamically inserted here -->
+        </form>
+
+        <div id="result" class="result" style="display: none;">
+            <h1 style="text-transform:uppercase" id="racerTitle"></h1>
+            <div><img id="racerImage" style="width: 300px; padding-top: 30px; padding-bottom: 30px; object-fit:cover;"></div>
+            <i style="font-size: 1.2em" id="racerQuote"></i>
+
+            <h2>💪 Speedster Qualities</h2>
+            <p id="speedsterQualities"></p>
+
+            <h2>🛣️ Compatible Tracks</h2>
+            <p id="compatibleTracks"></p>
+
+            <h2>🚀 Accelerators</h2>
+            <p id="careerAccelerators"></p>
+
+            <h2>🛠️ Pit Stop Adjustments</h2>
+            <p id="pitstopAdjustments"></p>
+
+            <div class="compatibility">
+                <div class="compatibility-item">
+                    <h2>🤝 Teammate Material</h2>
+                    <p id="teammateMaterial"></p>
+                </div>
+                <div class="compatibility-item">
+                    <h2>💥 Arch Rival</h2>
+                    <p id="archRival"></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Load the Data.js file -->
+    <script src="Data.js"></script>
+    <script>
+        // Wait for the DOM to load
+        document.addEventListener('DOMContentLoaded', () => {
+            const quizForm = document.getElementById('quizForm');
+            const resultDiv = document.getElementById('result');
+            const racerTitle = document.getElementById('racerTitle');
+            const racerImage = document.getElementById('racerImage');
+            const riasecProfile = document.getElementById('riasecProfile');
+            const speedsterQualities = document.getElementById('speedsterQualities');
+            const compatibleTracks = document.getElementById('compatibleTracks');
+            const careerAccelerators = document.getElementById('careerAccelerators');
+            const pitstopAdjustments = document.getElementById('pitstopAdjustments');
+            const teammateMaterial = document.getElementById('teammateMaterial');
+            const archRival = document.getElementById('archRival');
+
+            // Define
+            const riasecTitles = {
+                "Realistic": "Tenacious Tortoise",
+                "Investigative": "Insightful Eagle",
+                "Artistic": "Daring Dolphin",
+                "Social": "Social Squirrel",
+                "Enterprising": "Fearless Falcon",
+                "Conventional": "Precise Puma"
+            };
+
+            const racerImages = {
+                "Realistic": "media/tenacious tortoise.jpeg",
+                "Investigative": "media/insightful eagle.jpeg",
+                "Artistic": "media/daring dolphin.jpeg",
+                "Social": "media/social squirrel.jpeg",
+                "Enterprising": "media/fearless falcon.jpeg",
+                "Conventional": "media/precise puma.jpeg"
+            };
+
+            const racerQuotes = {
+                "Realistic": "Slow and steady doesn’t just win—it finishes strong and leaves everyone else in the dust.",
+                "Investigative": "I may take my time in the pit, but I always come out ahead with a winning strategy.",
+                "Artistic": "Why stay on the track when I can blaze my own trail to victory?",
+                "Social": "The race isn’t won alone — it’s about the team that pushes you over the finish line.",
+                "Enterprising": "In this race, there's no time to hesitate — I’m already on the next lap!",
+                "Conventional": "Victory’s in the details. I’ve mapped out every turn to make sure I stay in control."
+            };
+
+            const speedsterQualitiesData = {
+                "Realistic": "Practical, reliable, and focused on getting things done\nThrives in action-oriented environments\nPrefers structure and consistency\nMethodical, steady approach to work",
+                "Investigative": "Deep thinker, analytical, and observant\nPrefers calculated decisions over hasty ones\nStrong problem solver, excels in research and data analysis\nMethodical and strategic in every race",
+                "Artistic": "Highly creative, loves innovation and experimentation\nDriven by passion and exploration of new ideas\nThrives in environments that support self-expression\nEnjoys collaboration and inspiring fresh perspectives",
+                "Social": "Great team player, thrives on collaboration and harmony\nEmpathetic, excels in building relationships and helping others\nStrong listener, passionate about connecting people and ideas\nFocused on positive impact and team growth",
+                "Enterprising": "Fast-paced decision-maker\nRisk-taker, thrives on competition\nDriven by goals, outcomes, and leadership\nComfortable with high-stakes environments",
+                "Conventional": "Detail-oriented, focused on order and procedure\nThrives in structured environments\nSkilled at creating systems to improve efficiency\nPrefers stability, predictability, and consistency"
+            };
+
+            const compatibleTracksData = {
+                "Realistic": "Project Manager\nConstruction Manager\nOperations Specialist\nTechnical Support Specialist\nLogistics Coordinator",
+                "Investigative": "Data Scientist\nResearch Scientist\nArchitect/Urban Planner\nSystems Analyst\nFinancial Analyst",
+                "Artistic": "Graphic Designer\nFilm Director\nCopywriter\nUX/UI Designer\nEvent Planner",
+                "Social": "Human Resources Specialist\nCounsellor/Therapist\nCommunity Manager\nTeacher/Trainer\nCustomer Service Manager",
+                "Enterprising": "Sales Manager\nEntrepreneur/Start-up Founder\nMarketing Director\nExecutive Leadership\nBusiness Development Specialist",
+                "Conventional": "Accountant\nAdministrative Assistant\nCompliance Officer\nSupply Chain Manager\nData Entry Specialist"
+            };
+
+            const careerAcceleratorsData = {
+                "Realistic": "Thrive in industries that value structure and efficiency\nGain promotion through expertise and dependability",
+                "Investigative": "Thrive in precision-driven environments that value research and analysis\nPropel your career with advanced certifications and specialised knowledge",
+                "Artistic": "Flourish in industries that value creativity and outside-the-box thinking\nBuild your personal brand as a creative leader or influencer",
+                "Social": "Shine in industries focused on social impact and team-building\nProgress to managerial roles that leverage your interpersonal skills",
+                "Enterprising": "Excel in high-energy environments where speed and innovation matter\nExpand influence in entrepreneurial or fast-growing sectors",
+                "Conventional": "Shine in roles that require precision, consistency, and reliability\nBoost career prospects through industry-specific certifications and tools"
+            };
+
+            const pitstopAdjustmentsData = {
+                "Realistic": "Increase adaptability to faster-paced environments\nImprove problem-solving for unexpected challenges\nPractice quicker decision-making in action-oriented roles",
+                "Investigative": "Cultivate leadership skills for managing teams\nBalance analysis with quicker decision-making\nStrengthen interpersonal relationships for collaboration",
+                "Artistic": "Embrace feedback to refine ideas\nImprove business acumen alongside creativity\nManage projects with structure and routine",
+                "Social": "Develop leadership while maintaining empathy\nImprove assertiveness for handling conflicts\nBuild independence for solo tasks and projects",
+                "Enterprising": "Build emotional intelligence for balanced leadership\nDevelop patience for long-term projects\nRefine risk management for sustainable decisions",
+                "Conventional": "Upskill in digital tools for greater productivity\nEmbrace creativity in tackling unpredictable challenges\nBalance routine with flexibility for innovative solutions"
+            };
+
+            const teammateMaterialData = {
+                "Realistic": { name: "INSIGHTFUL EAGLE", description: "Both value precision and steady progress", image: "media/insightful eagle.jpeg" },
+                "Investigative": { name: "TENACIOUS TORTOISE", description: "Both share a love for solving complex problems", image: "media/tenacious tortoise.jpeg" },
+                "Artistic": { name: "SOCIAL SQUIRREL", description: "Both value collaboration and love bringing fresh ideas to the table", image: "media/social squirrel.jpeg" },
+                "Social": { name: "DARING DOLPHIN", description: "Both are attuned to others and thrive in creative, collaborative environments", image: "media/daring dolphin.jpeg" },
+                "Enterprising": { name: "DARING DOLPHIN", description: "Both love creative challenges and tackling ambitious goals", image: "media/daring dolphin.jpeg" },
+                "Conventional": { name: "TENACIOUS TORTOISE", description: "Both excel in structured environments with a focus on order and reliability", image: "media/tenacious tortoise.jpeg" }
+            };
+
+            const archRivalData = {
+                "Realistic": { name: "DARING DOLPHIN", description: "Practicality may clash with the Dolphin’s creative flexibility", image: "media/daring dolphin.jpeg" },
+                "Investigative": { name: "FEARLESS FALCON", description: "Cautious pace can clash with the Falcon’s rapid, risk-driven style", image: "media/fearless falcon.jpeg" },
+                "Artistic": { name: "PRECISE PUMA", description: "Free-spirited approach may not always align with the Puma’s structured preferences", image: "media/fearless falcon.jpeg" },
+                "Social": { name: "FEARLESS FALCON", description: "Empathetic, people-focused approach may clash with the Falcon’s risk-taking style", image: "media/fearless falcon.jpeg" },
+                "Enterprising": { name: "PRECISE PUMA", description: "Bold strategies may clash with the Puma’s structured, predictable approaches", image: "media/precise puma.jpeg" },
+                "Conventional": { name: "DARING DOLPHIN", description: "Preference for routine may not align with the Dolphin’s spontaneous approach", image: "media/daring dolphin.jpeg" }
+            };
+
+            // Function to generate the quiz
+            function generateQuiz() {
+                quizData.forEach((q, index) => {
+                    const questionDiv = document.createElement('div');
+                    questionDiv.classList.add('question');
+
+                    const questionHeader = document.createElement('h2');
+                    questionHeader.textContent = q.header;
+                    questionDiv.appendChild(questionHeader);
+
+                    if (q.image) {
+                    const imageElement = document.createElement('img');
+                    imageElement.src = q.image;
+                    imageElement.alt = `Image for ${q.question}`;
+                    imageElement.style.width = '100%';  // Adjust image size as needed
+                    questionDiv.appendChild(imageElement);
+                    }
+
+                    const questionText = document.createElement('p');
+                    questionText.textContent = q.question;
+                    questionDiv.appendChild(questionText);
+
+                    const optionsDiv = document.createElement('div');
+                    optionsDiv.classList.add('options');
+
+                    q.options.forEach((option, optIndex) => {
+                        const label = document.createElement('label');
+                        const input = document.createElement('input');
+                        input.type = 'radio';
+                        input.name = `q${index + 1}`;
+                        input.value = option.type;
+                        label.appendChild(input);
+                        label.appendChild(document.createTextNode(option.text));
+                        optionsDiv.appendChild(label);
+                    });
+
+                    questionDiv.appendChild(optionsDiv);
+                    quizForm.appendChild(questionDiv);
+                });
+
+                // Add Submit Button
+                const submitButton = document.createElement('button');
+                submitButton.type = 'submit';
+                submitButton.textContent = 'Generate Your Racer';
+                quizForm.appendChild(submitButton);
+            }
+
+            // Predefined priority order for RIASEC types
+            const priorityOrder = ["Realistic", "Investigative", "Artistic", "Social", "Enterprising", "Conventional"];
+
+            // Function to calculate the RIASEC profile
+            function calculateResult(answers) {
+                // Initialize tally for each RIASEC type
+                const tally = {
+                    "Realistic": 0,
+                    "Investigative": 0,
+                    "Artistic": 0,
+                    "Social": 0,
+                    "Enterprising": 0,
+                    "Conventional": 0
+                };
+
+                // Tally up answers
+                answers.forEach(answer => {
+                    if (tally.hasOwnProperty(answer)) {
+                        tally[answer]++;
+                    }
+                });
+
+                // Step 1: Identify the maximum score
+                const maxScore = Math.max(...Object.values(tally));
+
+                // Step 2: Filter for types with the maximum score
+                let tiedTypes = Object.keys(tally).filter(type => tally[type] === maxScore);
+
+                // Step 3: Sort tied types by priority order and select the top one
+                tiedTypes.sort((a, b) => priorityOrder.indexOf(a) - priorityOrder.indexOf(b));
+                const topType = tiedTypes[0]; // Get the top type based on the sorted order
+
+                return topType;
+            }
+
+            // Function to get racer title based on top RIASEC type
+            function getRacerTitle(type) {
+                return riasecTitles[type];
+            }
+
+            // Generate the quiz on page load
+            generateQuiz();
+
+            quizForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const formData = new FormData(quizForm);
+                const answers = [];
+
+                // Collect answers
+                for (let [key, value] of formData.entries()) {
+                    answers.push(value);
+                }
+
+                // Ensure all questions are answered
+                if (answers.length < quizData.length) {
+                    alert("Please answer all questions before submitting the quiz.");
+                    return;
+                }
+
+                // Calculate the RIASEC profile
+                const topType = calculateResult(answers);
+
+                // Determine Racer Title
+                const title = getRacerTitle(topType);
+
+                // Prepare Racer Quote
+                const quote = racerQuotes[topType];
+
+                // Prepare Speedster Qualities Text
+                const qualitiesArray = speedsterQualitiesData[topType].split("\n");
+                const qualities = `<ul>${qualitiesArray.map(item => `<li>${item}</li>`).join('')}</ul>`;
+
+                // Prepare Compatible Tracks text
+                const tracksArray = compatibleTracksData[topType].split("\n");
+                const tracks = `<ul>${tracksArray.map(item => `<li>${item}</li>`).join('')}</ul>`;
+
+                // Prepare Accelerators text
+                const acceleratorsArray = careerAcceleratorsData[topType].split("\n");
+                const accelerators = `<ul>${acceleratorsArray.map(item => `<li>${item}</li>`).join('')}</ul>`;
+
+                // Prepare Pit Stop Adjustments text
+                const adjustmentsArray = pitstopAdjustmentsData[topType].split("\n");
+                const adjustments = `<ul>${adjustmentsArray.map(item => `<li>${item}</li>`).join('')}</ul>`;
+
+                // Prepare Teammate Material text
+                const teammate = `
+                    <h3>${teammateMaterialData[topType].name}</h3>
+                    <img src="${teammateMaterialData[topType].image}" alt="${teammateMaterialData[topType].name}" style="width: 120px; margin-top: 10px; margin-bottom: 0;">
+                    <p style="margin: 6px">${teammateMaterialData[topType].description}</p>
+                `;
+
+                // Prepare Arch Rival text
+                const rival = `
+                    <h3>${archRivalData[topType].name}</h3>
+                    <img src="${archRivalData[topType].image}" alt="${archRivalData[topType].name}" style="width: 120px; margin-top: 10px; margin-bottom: 0;">
+                    <p style="margin: 6px">${archRivalData[topType].description}</p>
+                `;
+
+                // Display the results
+                racerTitle.innerHTML = `<strong>${title}</strong>`;
+                racerImage.src = racerImages[topType];
+                racerQuote.innerHTML = `"${quote}"`;
+                speedsterQualities.innerHTML = qualities;
+                compatibleTracks.innerHTML = tracks;
+                careerAccelerators.innerHTML = accelerators;
+                pitstopAdjustments.innerHTML = adjustments;
+                teammateMaterial.innerHTML = teammate;
+                archRival.innerHTML = rival;
+
+                // Hide the quiz and show the result
+                quizForm.style.display = 'none';
+                resultDiv.style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>
